@@ -272,7 +272,3 @@ Old client uses PuTTY
 - [ ] Converted .pem to .ppk using PuTTYgen
 - [ ] Connected to EC2 using PuTTY
 - [ ] Can explain difference between all three to someone
-
----
-
-*Part of my DevOps learning journey — Abhishek Veeramalla's Zero to Hero Playlist*
