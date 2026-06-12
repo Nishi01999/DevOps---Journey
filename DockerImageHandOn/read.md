@@ -39,11 +39,11 @@ CMD ["python3", "app.py"]
 ~
 
 Step 3 — Build the Image
-docker build -t yourusername/my-first-docker-image:latest .
+docker build -t knishi1999/my-first-doc-image:v1 .
 The . at the end means "look for Dockerfile in current directory"
 Latest : tag to unify docker image id.
 Yourusername: username of docker from which we logged in
-my-first-docker-image: this is the repo that we will use.
+my-first-doc-image: this is the repo that we will use.
 
 Inside your username there will be a repo that is going to be created.
 
@@ -60,16 +60,20 @@ REPOSITORY                                              TAG       IMAGE ID      
 yourusername/my-first-docker-image      latest  960d37536dcd  467MB
 ubuntu                                                           latest    58db3edaf2be   77.8MB
 hello-world                                                   latest    feb5d9fea6a5   13.3kB
+knishi1999/my-first-doc-image:v1
+                            2b04720f6fef        849MB          225MB
+
 Step 5 — Run a Container from Your Image
-docker run -it yourusername/my-first-docker-image:latest
+docker run -it knishi1999/my-first-doc-image:v1
 Output:
 Hello World
-Isme tag dete hai taaki docker hub me pehchan sake apne image ko. Ye ek docker image id hogi ise assigned, wo yaad rkhna mushkil hota hai isliye tag add krte hain.(latest tag hi hai)
+
 
 Step 6 — Push Image to Docker Hub
-docker push yourusername/my-first-docker-image:latest
-	Now anyone in the world can pull and run your image with:
-			docker pull yourusername/my-first-docker-image
+
+nishikush@Nishi:~/DevOps---Journey/DockerImageHandOn$ docker push knishi1999/my-first-doc-image:v1
 ________________________________________________________
-<img width="925" height="1966" alt="image" src="https://github.com/user-attachments/assets/651707fb-3571-4783-9a4b-4cad3c2e2143" />
+<img width="1527" height="262" alt="image" src="https://github.com/user-attachments/assets/843028fe-ada6-494b-a314-d13448c61bdd" />
+<img width="1572" height="157" alt="image" src="https://github.com/user-attachments/assets/ba226036-a036-4320-a961-2bbac009a878" />
+
 
