@@ -1,33 +1,101 @@
-Step 1: Create Volume
-docker volume create mysql-data
-
-Step 2: Run MySQL Container
+🟢 Step 1: Create DB Container
 docker run -d \
---name mysql-db \
--e MYSQL_ROOT_PASSWORD=root123 \
--v mysql-data:/var/lib/mysql \
--p 3306:3306 \
-mysql:8.0
+  --name mysql-db \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=myapp \
+  -p 3307:3306 \
+  mysql
 
-Step 3: Verify
-docker ps
+🟢 Step 2: Insert Data (CLI Only)
+docker exec -it mysql-db mysql -uroot -proot 
+USE myapp;
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50)
+);
+INSERT INTO users (name) VALUES ('Ravi'), ('Sita');
+SELECT * FROM users;
+"
 
-Step 4: Enter Container
-docker exec -it mysql-db bash
+“Data is now stored inside the container”
 
-Step 5: Login to MySQL
-mysql -u root -p
 
-Step 6: Create Database
-CREATE DATABASE school;
 
-Step 7: Stop Container
-docker stop mysql-db
 
-Step 8: Start Container Again
-docker start mysql-db
+🔵 Step 3: Create Network
+create a network so containers can talk
+docker network create myapp-net
 
-Step 9: Verify Data Still Exists
-SHOW DATABASES;
+🔵 Step 4: Run Web UI (Adminer)
+docker run -d \
+  --name adminer \
+  --network myapp-net \
+  -p 8082:8080 \
+  adminer
 
-If school still exists, you've successfully learned the most important concept in database containers: persistent storage using volumes.
+🔵 Step 5: Connect DB to Network
+docker network connect myapp-net mysql-db
+
+🌍 Step 6: Browser Demo
+👉 Open:
+http://localhost:8082
+Login:
+Server: mysql-db
+Username: root
+Password: root
+Database: myapp
+👉 Show users table
+
+
+“Browser → Adminer → MySQL → Data → Back to browser”
+<img width="842" height="837" alt="image" src="https://github.com/user-attachments/assets/07d97a2e-22c5-4211-b993-015b1afac3cb" />
+
+
+🔴 Step 7: Break It (Delete DB)
+
+“delete the container”
+docker rm -f mysql-db
+
+
+💾 Step 8: Fix with Volume
+
+“make data permanent using volumes”
+docker volume create mydata
+
+docker run -d \
+  --name mysql-db \
+  --network myapp-net \
+  -v mydata:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=myapp \
+  mysql
+
+🟢 Step 9: Insert Data Again (CLI)
+docker exec -it mysql-db mysql -uroot -proot -e "
+USE myapp;
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50)
+);
+INSERT INTO users (name) VALUES ('Ravi'), ('Sita');
+"
+
+🔁 Step 10: Delete & Recreate (With Volume)
+docker rm -f mysql-db
+
+docker run -d \
+  --name mysql-db \
+  --network myapp-net \
+  -v mydata:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=myapp \
+  mysql
+
+🎉 Step 11: Verify Data (CLI)
+docker exec -it mysql-db mysql -uroot -proot 
+USE myapp;
+SELECT * FROM users;
+"
+<img width="407" height="197" alt="image" src="https://github.com/user-attachments/assets/3ee42550-fa81-4547-961d-8d4193a1b784" />
+
+👉 Data still exists ✅
