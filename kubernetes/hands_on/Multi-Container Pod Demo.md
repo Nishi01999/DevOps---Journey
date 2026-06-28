@@ -1,6 +1,9 @@
 Multi Container Pod (MySQL + Adminer)
+
 Step 1 – Create YAML
+
 vi mysql-adminer-pod.yaml
+
 
 insert:
 
